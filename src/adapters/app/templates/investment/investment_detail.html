@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+				{% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                            {% if error %}
+                                <div class="toast " style="" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                                  <div class="toast-header">
+                                    <i class="fas fa-exclamation-circle fa-exclamation-circle-error"></i>&nbsp;&nbsp;
+                                    <strong class="mr-auto"> {{ category }}</strong>
+                                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="toast-body">
+                                    {{ message }}
+                                  </div>
+                                </div>
+                            {% else %}
+                                <div class="toast" style="opacity:0;" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                                  <div class="toast-header">
+                                    <strong class="mr-auto"> {{ category }}</strong>
+                                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="toast-body">
+                                    {{ message }} &nbsp;&nbsp;<i class="fas fa-check-circle fa-check-circle-success"></i>
+                                  </div>
+                                </div>
+                            {% endif %}
+                    {% endfor %}
+                {% endwith %}
+
+	<!--====== Header Start ======-->
+	{% include "includes/nav.html" %}
+	<!--====== Header End ======-->
+
+	<!--====== Project Details Area Start ======-->
+	{% for investment_data in investments_data %}
+		<section class="project-details-area section-gap-extra-bottom mt-40">
+		<div class="container">
+			<div class="row no-gutters align-items-center justify-content-center investment-item-border pl-20 pb-20 pt-20">
+				<div class="col-lg-5 col-md-10">
+					<div class="project-thumb mb-md-50">
+						<img src="../../static/img/ChickenDetail.jpg" alt="Image">
+					</div>
+				</div>
+				<div class="col-lg-7">
+					<div class="project-summery mt-35">
+						<div class="row">
+							<div class="col-md-9">
+								<h3 class="project-title">Investment - {{ investment_data.get('name').lower() }}</h3>
+							</div>
+							<div class="col-md-3">
+								<a class="category"><i class="far fa-users"></i> {{ investment_data.get('category')}}</a>
+							</div>
+						</div>
+
+						<div class="meta">
+							<div class="author">
+								<img alt="Zimbabwe" src="{{ investment_data.get('location_thumbnail') }}">
+								<a href="#">{{ investment_data.get('location') }}</a>
+							</div>
+							<a href="#" class="date">
+								<i class="far fa-calendar-alt"></i>{{ investment_data.get('duration') }} weeks from when this investment goes live.
+							</a>
+						</div>
+						<div class="project-funding-info">
+							<div class="info-box">
+								<span>
+									£{{ investment_data.get('amount') }}<spa class="pence-text">.{{investment_data.get('amount_trailing_pence')}}</spa>
+								</span>
+								<br/>
+								<span class="info-title">Invested</span>
+							</div>
+							<div class="info-box">
+								<span>{{ investment_data.get('interest_yield') }}<spa class="pence-text">%</spa></span>
+								<br/>
+								<span class="info-title">Interest</span>
+							</div>
+							<div class="info-box">
+								<span>£{{ investment_data.get('return') }}</span><spa class="pence-text">.{{investment_data.get('return_trailing_pence')}}</spa>
+								<br/>
+								<span class="info-title">Return</span>
+							</div>
+						</div>
+<!--						<div class="project-raised clearfix">-->
+<!--							<div class="d-flex align-items-center justify-content-between">-->
+<!--								<div class="raised-label">£{{ investment_data.get('amount_raised') }} Funded</div>-->
+<!--								<div class="percent-raised">{{ investment_data.get('percentage_funded') }}%</div>-->
+<!--							</div>-->
+
+<!--						</div>-->
+						<div class="project-form">
+							<form action="{{url_for('commodity.view_detail', id_=investment_data.get('c_id_'))}}" method="get">
+
+								<div class="row no-gutters">
+									<div class="col-md-9"></div>
+									<div class="col-md-3">
+										<button type="submit" class="main-btn">
+											<a></a>Top-up <i class="far fa-arrow-right"></i>
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</section>
+	{% endfor %}
+	<!--====== Project Details Area End ======-->
+
+{% endblock %}
