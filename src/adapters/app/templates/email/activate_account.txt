@@ -1,0 +1,12 @@
+Dear {{ user.get("email") }},
+
+You're receiving this message because you recently signed up for a Simba account.
+
+Confirm your email address by clicking the link below. This step adds extra security to your account by verifying you
+own this email.
+
+{{ url_for('auth.activate_account', token=token, _external=True) }}
+
+Sincerely,
+
+Team Simba

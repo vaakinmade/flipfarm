@@ -3,3 +3,11 @@
 
 # IDE
 .idea/
+
+# compile py files
+*.pyc
+
+#venv
+simba-venv/
+*env/
+venv/

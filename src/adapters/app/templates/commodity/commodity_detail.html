@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+				{% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                            {% if error %}
+                                <div class="toast " style="" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                                  <div class="toast-header">
+                                    <i class="fas fa-exclamation-circle fa-exclamation-circle-error"></i>&nbsp;&nbsp;
+                                    <strong class="mr-auto"> {{ category }}</strong>
+                                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="toast-body">
+                                    {{ message }}
+                                  </div>
+                                </div>
+                            {% else %}
+                                <div class="toast" style="opacity:0;" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                                  <div class="toast-header">
+                                    <strong class="mr-auto"> {{ category }}</strong>
+                                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="toast-body">
+                                    {{ message }} &nbsp;&nbsp;<i class="fas fa-check-circle fa-check-circle-success"></i>
+                                  </div>
+                                </div>
+                            {% endif %}
+                    {% endfor %}
+                {% endwith %}
+
+	<!--====== Header Start ======-->
+	{% include "includes/nav.html" %}
+	<!--====== Header End ======-->
+
+	<!--====== Project Details Area Start ======-->
+	<section class="project-details-area section-gap-extra-bottom">
+		<div class="container">
+			<div class="row align-items-center justify-content-center">
+				<div class="col-lg-6 col-md-10">
+					<div class="project-thumb mb-md-50">
+						<img src="../../static/img/ChickenDetail.jpg" alt="Image">
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="project-summery mt-35">
+						<div class="row no-gutters">
+							<div class="col-md-9">
+								<h3 class="project-title">{{ commodity_data.get('name') }}</h3>
+							</div>
+							<div class="col-md-3">
+								<a class="category"><i class="far fa-users"></i> {{ commodity_data.get('category')}}</a>
+							</div>
+						</div>
+
+						<div class="meta">
+							<div class="author">
+								<img alt="Zimbabwe" src="{{ commodity_data.get('location_thumbnail') }}">
+								<a href="#">{{ commodity_data.get('location') }}</a>
+							</div>
+							<a href="#" class="date"><i class="far fa-calendar-alt"></i>{{ commodity_data.get('duration') }} weeks</a>
+						</div>
+						<div class="project-funding-info">
+							<div class="info-box">
+								<span>
+									£{{ commodity_data.get('amount') }}<spa class="pence-text">.{{commodity_data.get('amount_trailing_pence')}}</spa>
+								</span>
+								<br/>
+								<span class="info-title">Capital</span>
+							</div>
+							<div class="info-box">
+								<span>{{ commodity_data.get('interest_yield') }}%</span>
+								<br/>
+								<span class="info-title">Yield</span>
+							</div>
+							<div class="info-box">
+								<span>£{{ commodity_data.get('amount_left') }}</span><spa class="pence-text">.{{commodity_data.get('amount_left_trailing_pence')}}</spa>
+								<br/>
+								<span class="info-title">Available</span>
+							</div>
+						</div>
+						<div class="project-raised clearfix">
+							<div class="d-flex align-items-center justify-content-between">
+								<div class="raised-label">£{{ commodity_data.get('amount_raised') }} Funded</div>
+								<div class="percent-raised">{{ commodity_data.get('percentage_funded') }}%</div>
+							</div>
+							<div class="project-items project-item stats-bar" data-value="{{ commodity_data.get('percentage_funded') }}">
+								<div class="bar-line"></div>
+							</div>
+						</div>
+						<div class="project-form">
+							<form action="{{url_for('commodity.view_detail', id_=commodity_data.get('id_'))}}" method="post">
+								<ul class="donation-amount">
+									<li class="amount" id="100">£100</li>
+									<li class="amount" id="150">£150</li>
+									<li class="amount" id="200">£200</li>
+									<li class="amount" id="500">£500</li>
+									<li class="amount" id="1000">£1000</li>
+								</ul>
+								<div class="row no-gutters">
+									<div class="col-md-7 mt-20"><input type="text" name="custom_amount" placeholder="Enter a custom amount"></div>
+									<input type="hidden" name="amount" value="">
+									<input type="hidden" name="investment_type" value="pooled">
+									<div style="padding-left:20px;" class="col-md-5 mt-20">
+										{% if commodity_data.get('i_id') %}
+											<button style="margin-right:20px;" type="submit" class="main-btn">
+												Top up <i class="far fa-arrow-right"></i>
+											</button> <i data-toggle="tooltip" data-placement="right"
+														 title="Top up on your existing investment in this commodity" class="far fa-question-circle"></i>
+										{% else %}
+											<button type="submit" class="main-btn">
+												Invest <i class="far fa-arrow-right"></i>
+											</button>
+										{% endif %}
+
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<!--====== Project Details Area End ======-->
+
+{% endblock %}

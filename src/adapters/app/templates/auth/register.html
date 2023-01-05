@@ -1,0 +1,105 @@
+{% extends 'auth_base.html' %}
+
+{% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if error %}
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                  <div class="toast-header">
+                    <i class="fas fa-exclamation-circle fa-exclamation-circle-error"></i>&nbsp;&nbsp;
+                    <strong class="mr-auto"> {{ category }}</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="toast-body">
+                    {{ message }}
+                  </div>
+                </div>
+            {% else %}
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                  <div class="toast-header">
+                    <strong class="mr-auto"> {{ category }}</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="toast-body">
+                    {{ message }} &nbsp;&nbsp;<i class="fas fa-check-circle fa-check-circle-success"></i>
+                  </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+
+  <!--====== Contact Section Start ======-->
+    <section class="section-gap-20-top-padding">
+
+        <div class="container">
+            <div>
+                <div class="row no-gutters">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="contact-form">
+                            <div class="row">
+                              <div class="col-md-4"></div>
+                              <div class="col-md-8">
+                                <a href="{{url_for('home.index')}}">
+                                    <img width="120" height="120" src="../../static/img/simba_logo.gif" alt="Simba">
+                                </a>
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <form id="contactForm" action="{{url_for('auth.register')}}" name="contactForm" method="post">
+                                {{ form.hidden_tag() }}
+                                <h3 class="form-title">{{title}}</h3>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                          <div class="form-fiel form-group mb-25">
+                                              {{ form.email.label }}
+                                              {{ form.email(size=35) }}
+<!--                                              <label for="email">Email Address</label>-->
+<!--                                              <input type="email" placeholder="" id="email" name="email" required data-error="Please enter your email">-->
+<!--                                              <div class="help-block with-errors"></div>-->
+                                          </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-fiel form-group mb-25">
+<!--                                            <label for="name">Password</label>-->
+<!--                                            <input type="password" placeholder="" name="password" id="password" required data-error="Please enter your password">-->
+                                            {{ form.password.label }}
+                                            {{ form.password }}
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-fiel form-group mb-25">
+<!--                                            <label for="name">Re-Type Password</label>-->
+<!--                                            <input type="password" placeholder="" name="confirm_password" id="confirm_password" required data-error="Please re-enter your password">-->
+                                            {{ form.confirm.label }}
+                                            {{ form.confirm }}
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-field form-group">
+                                            <button type="submit" class="main-btn">Sign Up <i class="far fa-arrow-circle-right"></i></button>
+                                            <div id="msgSubmit" class="hidden"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row no-gutter">
+                                    <div class="col-md-12">
+                                        Already have an account? <a href="{{url_for('auth.login')}}">Login here</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+	<!--====== Contact Section End ======-->
+{% endblock %}

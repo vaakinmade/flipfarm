@@ -1,0 +1,117 @@
+<!--[if lte IE 9]>
+	<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+<![endif]-->
+
+<!--====== Preloader ======-->
+<div id="preloader">
+		<div id="loading-center">
+			<div id="loading-center-absolute">
+				<div class="object" id="object_one"></div>
+				<div class="object" id="object_two"></div>
+				<div class="object" id="object_three"></div>
+				<div class="object" id="object_four"></div>
+			</div>
+		</div>
+	</div>
+
+<!--====== Header Start ======-->
+	<header class="site-header sticky-header transparent-header">
+
+		<div class="navbar-wrapper">
+			<div class="container">
+				<div class="navbar-inner">
+					<div class="site-logo">
+						<a href="{{url_for('home.index')}}"><img width="60" height="60" src="../../static/img/simba_logo.gif" alt="Simba"></a>
+					</div>
+					<div class="nav-menu">
+						<ul>
+							<li class="current">
+								<a href="#">Home</a>
+							</li>
+							<li>
+								<a href="#">About</a>
+							</li>
+							<li>
+								<a href="#">Commodities</a>
+							</li>
+							<li><a href="#">Farmers</a></li>
+							<li>
+								<a href="#">Marketplace</a>
+							</li>
+							<li>
+								<a href="#">FAQs</a>
+							</li>
+						</ul>
+					</div>
+					<div class="panel-extra row no-gutters">
+							{% if session.get('email') %}
+								<div class="dropdown show">
+									 <span class="" role="button" id="dropdownNotificationLink"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										 <i class="far fa-bell fa-lg" style="vertical-align:bottom;"></i> &nbsp;&nbsp;
+									 </span>
+									 <div class="dropdown-menu mt-10 app-notification" aria-labelledby="dropdownNotificationLink">
+										 <i class="far fa-solid fa-bell-slash fa-3x"></i><br/>
+										 <strong>It's quiet in here...</strong><br/>
+										 <small>Check back later for some awesome stuff</small>
+									  </div>
+								</div>
+								<div class="dropdown show">
+									<span class="user-profile" role="button" id="dropdownMenuLink"
+											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										{{ session.get('email')[0].upper() }}
+									  </span>
+									  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										  <a class="dropdown-item" href="#"><i class="far fa-user"></i> &nbsp;&nbsp;Profile</a>
+										  <a class="dropdown-item" href="#"><i class="far fa-cog"></i> &nbsp;&nbsp;Account settings</a>
+										  <div class="dropdown-divider"></div>
+										  <a class="dropdown-item" href="{{ url_for('auth.logout') }}"><i class="far fa-sign-out-alt"></i> &nbsp;&nbsp;Log Out</a>
+									  </div>
+								</div>
+							{% else %}
+								<ul>
+									<li><a href="{{ url_for('auth.login') }}"><i class="far fa-user-circle fa-lg"></i> Sign in</a></li>
+								</ul>
+							{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mobile-menu-panel">
+			<div class="panel-logo">
+				<a href="index.html"><img width="60" height="60" src="../../static/img/simba_logo.gif" alt="Simba"></a>
+			</div>
+			<ul class="panel-menu">
+				<li class="current">
+					<a href="#">Home</a>
+				</li>
+				<li>
+					<a href="#">About</a>
+				</li>
+				<li>
+					<a href="#">Commodities</a>
+				</li>
+				<li>
+					<a href="#">Farmers</a>
+				</li>
+				<li>
+					<a href="#">Marketplace</a>
+				</li>
+				<li><a href="#">FAQs</a></li>
+			</ul>
+			<div class="panel-extra">
+				<ul>
+					{% if g.user %}
+					  <li><span>{{ g.user['username'] }}</span>
+					  <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+					{% else %}
+					  <li><a href="{{ url_for('auth.register') }}">Register</a>
+					  <li><a href="{{ url_for('auth.login') }}">Log In</a>
+					{% endif %}
+				</ul>
+			</div>
+			<a href="#" class="panel-close">
+				<i class="fal fa-times"></i>
+			</a>
+		</div>
+	</header>

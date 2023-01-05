@@ -1,0 +1,61 @@
+{% extends 'auth_base.html' %}
+{% block content %}
+
+  <!--====== Contact Section Start ======-->
+    <section class="section-gap-20-top-padding">
+
+        <div class="container">
+            <div>
+                <div class="row no-gutters">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="contact-form center-text">
+                                <h3 class="form-title">{{title}}</h3>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-fiel form-group mb-25">
+                                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                                {% for category, message in messages %}
+                                                    {% if error %}
+                                                        <div>
+                                                            <i class="far fa-solid fa-exclamation-circle fa-3x"></i><br/>
+                                                            {{ error }}
+                                                        </div>
+                                                    {% else %}
+                                                        <div>
+                                                            <i class="far fa-solid fa-check-circle fa-3x"></i><br/>
+                                                            {{ message }}.
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endwith %}
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-field form-group">
+                                            {% if not error %}
+                                                {% if activated %}
+                                                    <button onclick="window.location.href='{{url_for('auth.login')}}';"
+                                                            type="submit" class="main-btn">
+                                                        Login <i class="far fa-arrow-circle-right"></i>
+                                                    </button>
+                                                {% endif %}
+                                            {% else %}
+                                                <button onclick="window.location.href='#';"
+                                                        type="submit" class="main-btn">
+                                                    Resend activation link <i class="far fa-arrow-circle-right"></i>
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+	<!--====== Contact Section End ======-->
+{% endblock %}

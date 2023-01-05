@@ -1,0 +1,49 @@
+BEGIN;
+
+DROP TABLE IF EXISTS investor CASCADE;
+DROP TABLE IF EXISTS investment;
+DROP TABLE IF EXISTS commodity CASCADE;
+
+CREATE TABLE investor (
+  id SERIAL PRIMARY KEY,
+  id_ VARCHAR UNIQUE NOT NULL,
+  first_name VARCHAR UNIQUE NULL,
+  last_name VARCHAR UNIQUE NULL,
+  password VARCHAR NOT NULL,
+  email VARCHAR UNIQUE NOT NULL,
+  date_of_birth DATE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE commodity (
+  id SERIAL PRIMARY KEY,
+  id_ VARCHAR UNIQUE NOT NULL,
+  name VARCHAR UNIQUE NOT NULL,
+  cycle INT NOT NULL,
+  interest_yield FLOAT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE investment (
+  id SERIAL PRIMARY KEY,
+  id_ VARCHAR UNIQUE NOT NULL,
+  investor_id INT NOT NULL,
+  commodity_id INT NOT NULL,
+  investment_yield FLOAT NOT NULL,
+  amount FLOAT NOT NULL,
+  active BOOL NOT NULL DEFAULT TRUE,
+  maturity_date TIMESTAMP,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_investor
+      FOREIGN KEY(investor_id)
+	    REFERENCES investor(id)
+	    ON DELETE SET NULL,
+
+  CONSTRAINT fk_commodity
+      FOREIGN KEY(commodity_id)
+	    REFERENCES commodity(id)
+	    ON DELETE SET NULL
+);
+
+COMMIT;
