@@ -16,4 +16,4 @@ blueprint = Blueprint('home', __name__, url_prefix='/')
 def index(commodity_service: CommodityService = Provide[Container.commodity_package.commodity_service]):
     current_user_avatar = session.get('email')[0].capitalize() if session.get('email') else None
     commodity = commodity_service.get_all_commodities()
-    return render_template('index.html', current_user=current_user_avatar, commodity=commodity[0])
+    return render_template('index.html', current_user=current_user_avatar, commodity=commodity[0], title="Home")
