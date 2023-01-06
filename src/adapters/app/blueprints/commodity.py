@@ -71,3 +71,7 @@ def get_commodity_data(id_,
         commodity_data = commodity_service.get_commodity_by_id(id_)
         investment_exists = False
     return commodity_data, investment_exists
+
+
+def index(commodity_service: CommodityService = Provide[Container.commodity_package.commodity_service]):
+    pass

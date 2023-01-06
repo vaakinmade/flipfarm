@@ -25,8 +25,8 @@
 					</div>
 					<div class="nav-menu">
 						<ul>
-							<li class="current">
-								<a href="#">Home</a>
+							<li class="{% if title == 'Home' %} current {% endif %}">
+								<a href="{{url_for('home.index')}}">Home</a>
 							</li>
 							<li>
 								<a href="#">About</a>
@@ -34,9 +34,11 @@
 							<li>
 								<a href="#">Commodities</a>
 							</li>
-							<li><a href="#">Farmers</a></li>
+							<li class="{% if title == 'Investment' %} current {% endif %}">
+								<a href="{{url_for('investment.user_investments')}}">Investment</a>
+							</li>
 							<li>
-								<a href="#">Marketplace</a>
+								<a href="#">Farmers</a>
 							</li>
 							<li>
 								<a href="#">FAQs</a>

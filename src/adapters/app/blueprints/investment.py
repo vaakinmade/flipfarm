@@ -60,4 +60,4 @@ def user_investments(investment_service: InvestmentService = Provide[Container.i
         data['amount'] = Money.extract_leading_pence(amount)
         data['amount_trailing_pence'] = Money.extract_trailing_pence(amount)
 
-    return render_template('investment/investment_detail.html', investments_data=investments_data)
+    return render_template('investment/investment_detail.html', investments_data=investments_data, title="Investment")
