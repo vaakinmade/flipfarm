@@ -5,12 +5,10 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 
-
-basedir = os.path.abspath(os.path.dirname(__file__))
-load_dotenv(os.path.join(basedir, '.env'))
+load_dotenv()
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 MAIL_SERVER = os.environ.get('MAIL_SERVER')
 MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
@@ -22,13 +20,14 @@ PASSWORD_RESET_TOKEN_USE = os.environ.get('PASSWORD_RESET_TOKEN_USE')
 ACCOUNT_ACTIVATION_TOKEN_USE = os.environ.get('ACCOUNT_ACTIVATION_TOKEN_USE')
 PASSWORD_RESET_EMAIL_SUBJECT = os.environ.get('PASSWORD_RESET_SUBJECT')
 ACCOUNT_ACTIVATION_EMAIL_SUBJECT = os.environ.get('ACCOUNT_ACTIVATION_SUBJECT')
+PG_PASSWORD = os.getenv('PG_PASSWORD')
 
 
 def get_db():
     connection = psycopg2.connect(
         database="simba_db",
         user="simba",
-        password='Yuta&"DmYj{eFIm[',
+        password=PG_PASSWORD,
         host="35.246.25.244",
         port=5432,
         cursor_factory=RealDictCursor,
