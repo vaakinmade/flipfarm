@@ -53,6 +53,8 @@ class UpdateUserInputDto(RegisterUserInputDto):
 def update_user_factory(id_: str, first_name: str = None, last_name: str = None, password: str = None,
                         email: str = None, date_of_birth: datetime = None, is_active: bool = None,
                         created_at: datetime = None) -> UpdateUserInputDto:
+    if password:
+        password = generate_password_hash(password)
     return UpdateUserInputDto(id_=id_, first_name=first_name, last_name=last_name, password=password, email=email,
                               date_of_birth=date_of_birth, is_active=is_active, created_at=created_at)
 
