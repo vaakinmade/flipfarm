@@ -21,7 +21,7 @@ def create_app() -> Flask:
     app.container = container
 
     # initialise app with SQLAlchemy
-    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://simba:somePassword@104.154.82.210/simba_db"
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://simba:{config.PG_PASSWORD}@35.246.25.244/simba_db"
 
     db.init_app(app)
     migrate.init_app(app, db)
