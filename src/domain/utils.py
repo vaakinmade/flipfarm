@@ -1,4 +1,11 @@
+from enum import Enum
 from typing import Any, Optional, Union
+
+
+class FundStatus(Enum):
+    PRE_FUNDING = "pre_funding"
+    FUNDING = "funding"
+    FUNDED = "funded"
 
 
 class Money(object):
