@@ -12,7 +12,7 @@ class Money(object):
     value: int
 
     def __init__(self, amount: Any, convert_to_pence=True):
-        if int(amount) != 0:
+        if amount not in (0, None):
             if convert_to_pence:
                 self.value = int(amount) * 100
             else:

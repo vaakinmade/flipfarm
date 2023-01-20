@@ -3,14 +3,14 @@ from datetime import datetime
 from typing import Union
 
 from ..ports.data_transfer_objects import CreateCommodityInputDto, UpdateCommodityInputDto
-from src.domain.utils import Money
+from src.domain.utils import Money, FundStatus
 
 
 @dataclass
 class Commodity:
     id_: str
     name: str
-    cycle: int
+    fund_status: FundStatus
     interest_yield: float
     location: str
     location_thumbnail: str
@@ -18,7 +18,6 @@ class Commodity:
     duration: int
     amount: Money
     amount_raised: Money
-    funded: bool
     created_at: datetime
 
 
@@ -27,7 +26,7 @@ def commodity_factory(commodity: Union[CreateCommodityInputDto, UpdateCommodityI
 
     return Commodity(id_=commodity.id_,
                      name=commodity.name,
-                     cycle=commodity.cycle,
+                     fund_status=commodity.fund_status,
                      amount=commodity.amount,
                      amount_raised=commodity.amount_raised,
                      location=commodity.location,
@@ -35,5 +34,4 @@ def commodity_factory(commodity: Union[CreateCommodityInputDto, UpdateCommodityI
                      category=commodity.category,
                      duration=commodity.duration,
                      interest_yield=commodity.interest_yield,
-                     funded=commodity.funded,
                      created_at=commodity.created_at)

@@ -18,9 +18,10 @@ class CommodityService:
     def create(self, commodity: CreateCommodityInputDto) -> Optional[Commodity]:
         commodity = commodity_factory(commodity)
         data = (commodity.id_, commodity.name, commodity.interest_yield, commodity.location,
-                commodity.category, commodity.duration, commodity.amount, commodity.created_at)
-        query = "INSERT INTO commodity (id_, name, interest_yield, location, category, duration, amount," \
-                " created_at)" " VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                commodity.location_thumbnail, commodity.category, commodity.duration, commodity.amount.value,
+                commodity.fund_status.value, commodity.created_at)
+        query = "INSERT INTO commodity (id_, name, interest_yield, location, location_thumbnail, category, duration, " \
+                "amount, fund_status, created_at)" " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         try:
             self.commodity_repo.execute(query, data, commit=True)
         except CommodityDBOperationError as err:
@@ -28,8 +29,8 @@ class CommodityService:
         return commodity
 
     def update_amount_raised(self, commodity: UpdateCommodityInputDto):
-        data = (commodity.amount_raised.value, commodity.funded, commodity.id_)
-        query = "UPDATE commodity SET amount_raised = %s, funded = %s WHERE id_ = %s"
+        data = (commodity.amount_raised.value, commodity.fund_status.value, commodity.id_)
+        query = "UPDATE commodity SET amount_raised = %s, fund_status = %s WHERE id_ = %s"
         try:
             self.commodity_repo.execute(query, data, commit=True)
         except Exception as err:
@@ -37,7 +38,8 @@ class CommodityService:
 
     def get_all_commodities(self) -> Optional[list[Any]]:
         data = ()
-        query = """SELECT * FROM commodity LIMIT 1"""
+        query = "SELECT * FROM commodity WHERE fund_status = 'funding' OR category = 'exclusive' ORDER BY category \
+        DESC"
         try:
             cursor = self.commodity_repo.execute(query, data, commit=True)
             return cursor.fetchall()
@@ -49,15 +51,15 @@ class CommodityService:
         query = "SELECT * FROM commodity WHERE id_ = %s;"
         try:
             cursor = self.commodity_repo.execute(query, data, commit=True)
-            return cursor.fetchone()
+            return cursor.fetchall()
         except Exception as err:
             raise CommodityDBOperationError() from err
 
     def get_commodity_investment_for_investor(self, id_: int, investor_id: int) -> dict:
         data = (id_, investor_id)
-        query = "SELECT c.id, c.id_, name, cycle, interest_yield, c.amount, location, location_thumbnail, " \
-                "category, duration, amount_raised, funded, i.id as i_id, i.id_ as i_id_ FROM commodity c LEFT JOIN " \
-                "investment i ON c.id = i.commodity_id WHERE c.id_ = %s AND i.investor_id = %s"
+        query = "SELECT c.id, c.id_, name, interest_yield, c.amount, location, location_thumbnail, " \
+                "category, duration, amount_raised, fund_status, i.id as i_id, i.id_ as i_id_ FROM commodity " \
+                "c LEFT JOIN investment i ON c.id = i.commodity_id WHERE c.id_ = %s AND i.investor_id = %s"
         try:
             cursor = self.commodity_repo.execute(query, data, commit=True)
             return cursor.fetchone()

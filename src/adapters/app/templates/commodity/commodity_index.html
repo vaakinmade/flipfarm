@@ -37,16 +37,20 @@
 	<!--====== Header End ======-->
 
 	<!--====== Project Details Area Start ======-->
-	<section class="project-details-area section-gap-extra-bottom">
-		<div class="container">
-			<div class="row align-items-center justify-content-center">
-				<div class="col-lg-5">
-					<div class="project-thumb mb-md-50">
-						<img src="../../static/img/ChickenDetail.jpg" alt="Image">
+	<div class="section-gap-bottom"></div>
+
+
+	{% for commodity_data in commodities %}
+		<section class="event-area section-gap-botto mb-30">
+		<div class="container mt-30">
+			<div class="row align-items-center justify-content-center commodity-items wow fadeInUp" data-wow-delay="0.2s">
+					<div class="col-lg-5">
+					<div class="project-thumb mb-md-50 cursor-pointer" onclick="window.location.href='{{url_for('commodity.view_detail', id_=commodity_data.get('id_'))}}';">
+						<img src="../../static/img/ChickenDetail.jpg" width="500" alt="Image">
 					</div>
 				</div>
-				<div class="col-lg-7">
-					<div class="project-summery mt-35">
+					<div class="col-lg-7">
+					<div class="project-summery">
 						<div class="row no-gutters">
 							<div class="col-md-9">
 								<h3 class="project-title">{{ commodity_data.get('name') }}</h3>
@@ -54,11 +58,13 @@
 							<div class="col-md-3">
 								<a class="category">
 									{% if commodity_data.get('category') == 'exclusive' %}
-										<i class="far fa-star-christmas"></i>
+									<span style="color:#FFD700;">
+										<i class="far fa-star-half-alt"></i>
+										{{ commodity_data.get('category')}}
+									</span>
 									{% else %}
-										<i class="far fa-users"></i>
+										<i class="far fa-users"></i> {{ commodity_data.get('category')}}
 									{% endif %}
-									{{ commodity_data.get('category')}}
 								</a>
 							</div>
 						</div>
@@ -66,7 +72,7 @@
 						<div class="meta">
 							<div class="author">
 								<img alt="Zimbabwe" src="{{ commodity_data.get('location_thumbnail') }}">
-								<a href="#">{{ commodity_data.get('location') }}</a>
+								<a href="#">{{ commodity_data.get('location') }} </a>
 							</div>
 							<a href="#" class="date"><i class="far fa-calendar-alt"></i>{{ commodity_data.get('duration') }} weeks</a>
 						</div>
@@ -98,41 +104,12 @@
 								<div class="bar-line"></div>
 							</div>
 						</div>
-						<div class="project-form">
-							<form action="{{url_for('commodity.view_detail', id_=commodity_data.get('id_'))}}" method="post">
-								<ul class="donation-amount">
-									<li class="amount" id="100">£100</li>
-									<li class="amount" id="150">£150</li>
-									<li class="amount" id="200">£200</li>
-									<li class="amount" id="500">£500</li>
-									<li class="amount" id="1000">£1000</li>
-								</ul>
-								<div class="row no-gutters">
-									<div class="col-md-7 mt-20"><input type="text" name="custom_amount" placeholder="Enter a custom amount"></div>
-									<input type="hidden" name="amount" value="">
-									<input type="hidden" name="investment_type" value="pooled">
-									<div style="padding-left:20px;" class="col-md-5 mt-20">
-										{% if commodity_data.get('i_id') %}
-											<button style="margin-right:20px;" type="submit" class="main-btn">
-												Top up <i class="far fa-arrow-right"></i>
-											</button> <i data-toggle="tooltip" data-placement="right"
-														 title="Top up on your existing investment in this commodity" class="far fa-question-circle"></i>
-										{% else %}
-											<button type="submit" class="main-btn">
-												Invest <i class="far fa-arrow-right"></i>
-											</button>
-										{% endif %}
-
-									</div>
-								</div>
-							</form>
-						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</section>
+	{% endfor %}
 	<!--====== Project Details Area End ======-->
 
 {% endblock %}
