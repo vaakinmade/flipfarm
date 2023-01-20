@@ -3892,6 +3892,29 @@ a:hover {
 	visibility: visible;
 }
 
+.commodity-items {
+    position: relative;
+	z-index: 1;
+	background-color: var(--white);
+	-webkit-box-shadow: 0px 30px 60px 0px rgba(0, 29, 35, 0.07);
+	box-shadow: 0px 30px 60px 0px rgba(0, 29, 35, 0.07);
+	padding: 40px 20px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.exclusive-color a {
+    color: #FFD700;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
 /*======= Event Items =======*/
 .event-items .single-event-item {
 	position: relative;

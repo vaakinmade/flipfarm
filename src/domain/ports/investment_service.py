@@ -18,11 +18,11 @@ class InvestmentService:
 
     def create(self, investment: CreateInvestmentInputDto) -> Optional[Investment]:
         _investment = investment_factory(investment)
-        data = (_investment.id_, _investment.commodity_id, _investment.investor_id, _investment.investment_yield,
-                _investment.amount.value, _investment.active, _investment.maturity_date, _investment.created_at,
+        data = (_investment.id_, _investment.commodity_id, _investment.investor_id,
+                _investment.amount.value, _investment.status, _investment.maturity_date, _investment.created_at,
                 _investment.updated_at)
-        query = "INSERT INTO investment (id_, commodity_id, investor_id, investment_yield, amount, active, " \
-                "maturity_date, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        query = "INSERT INTO investment (id_, commodity_id, investor_id, amount, status," \
+                "maturity_date, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         try:
             self.investment_repo.execute(query, data, commit=True)
         except Exception as err:
@@ -39,7 +39,7 @@ class InvestmentService:
 
     def get_investment_by_id(self, _id: int) -> Investment:
         data = (_id,)
-        query = "SELECT i.id, investment_yield, amount, active, maturity_date FROM investment i JOIN commodity c ON " \
+        query = "SELECT i.id, amount, status, maturity_date FROM investment i JOIN commodity c ON " \
                 "i.commodity_id = c.id WHERE i.id = %s"
 
         investment = self.investment_repo.execute(query, data).fetchone()
@@ -47,7 +47,7 @@ class InvestmentService:
 
     def get_investment_by_investor_and_commodity_id(self, investor_id: int, commodity_id: int) -> Investment:
         data = (investor_id, commodity_id)
-        query = "SELECT i.id, i.id_, investment_yield, i.amount, active, maturity_date FROM investment i JOIN " \
+        query = "SELECT i.id, i.id_, i.amount, status, maturity_date FROM investment i JOIN " \
                 "commodity c ON i.commodity_id = c.id WHERE i.investor_id = %s AND i.commodity_id = %s"
         try:
             cursor = self.investment_repo.execute(query, data, commit=True)
@@ -59,7 +59,7 @@ class InvestmentService:
         data = (investor_id,)
         query = "SELECT i.id, i.id_, i.amount, status, maturity_date, c.id as c_id, c.id_ as c_id_," \
                 "name, interest_yield, c.amount as c_amount, c.amount_raised, location, location_thumbnail, " \
-                "category, duration, funded "\
+                "category, duration, fund_status "\
                 "FROM investment i LEFT JOIN commodity c ON i.commodity_id = c.id WHERE i.investor_id = %s"
         try:
             cursor = self.investment_repo.execute(query, data, commit=True)

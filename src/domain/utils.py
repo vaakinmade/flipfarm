@@ -1,11 +1,18 @@
+from enum import Enum
 from typing import Any, Optional, Union
+
+
+class FundStatus(Enum):
+    PRE_FUNDING = "pre_funding"
+    FUNDING = "funding"
+    FUNDED = "funded"
 
 
 class Money(object):
     value: int
 
     def __init__(self, amount: Any, convert_to_pence=True):
-        if int(amount) != 0:
+        if amount not in (0, None):
             if convert_to_pence:
                 self.value = int(amount) * 100
             else:

@@ -1,13 +1,11 @@
-from typing import Tuple, Any, Optional
-
-from flask import Blueprint, render_template, request, flash, g, redirect, url_for, session
+from flask import Blueprint, render_template, request, flash, session
 from dependency_injector.wiring import inject, Provide
 
 from src.adapters.app.blueprints.auth import login_required
 from src.domain.ports import update_commodity_factory
 from src.main.containers import Container
 from src.domain.ports.commodity_service import CommodityService, get_new_raised_amount, calculate_percentage_raised
-from src.domain.utils import Money, validate_amount
+from src.domain.utils import Money, validate_amount, FundStatus
 from src.adapters.app.blueprints.investment import create_investment, update_investment
 from src.domain.ports.investment_service import Status
 
@@ -26,20 +24,23 @@ def view_detail(id_,
     amount_money = Money(commodity_data.get('amount'), convert_to_pence=False)
     amount_raised_money = Money(commodity_data.get('amount_raised'), convert_to_pence=False)
 
-    if request.method == 'POST' and request.form["investment_type"] == "pooled":
+    if request.method == 'POST':
         amount, error = validate_amount(request.form['amount'], request.form['custom_amount'])
 
         if not error:
+            fund_status = FundStatus(commodity_data.get('fund_status'))
             amount_raised, is_funded, exceeded_max = get_new_raised_amount(amount, amount_money, amount_raised_money)
+            if is_funded is True:
+                fund_status = FundStatus.FUNDED
             if not exceeded_max:
-                commodity_ = update_commodity_factory(id_=id_, amount_raised=amount_raised, funded=is_funded)
+                commodity_ = update_commodity_factory(id_=id_, amount_raised=amount_raised, fund_status=fund_status)
                 commodity_service.update_amount_raised(commodity_)
-                commodity_data['funded'] = is_funded
+                commodity_data['fund_status'] = fund_status
 
                 if investment_exists:
-                    create_investment(amount=Money(amount), commodity_id=commodity_data.get('id'))
-                else:
                     update_investment(amount=Money(amount), commodity_id=commodity_data.get('id'))
+                else:
+                    create_investment(amount=Money(amount), commodity_id=commodity_data.get('id'))
             else:
                 error = "Please enter an value that does not exceed the available amount."
                 flash(error, 'Error')
@@ -57,7 +58,7 @@ def view_detail(id_,
 
     commodity_data['percentage_funded'] = calculate_percentage_raised(amount_money, amount_raised_money)
     return render_template('commodity/commodity_detail.html', commodity=commodity_data, id=id_, error=error,
-                           commodity_data=commodity_data)
+                           commodity_data=commodity_data, title="Commodity")
 
 
 def get_commodity_data(id_,
@@ -73,5 +74,22 @@ def get_commodity_data(id_,
     return commodity_data, investment_exists
 
 
+@blueprint.route('/', methods=['GET'])
+@inject
 def index(commodity_service: CommodityService = Provide[Container.commodity_package.commodity_service]):
-    pass
+    commodities = commodity_service.get_all_commodities()
+    for commodity_data in commodities:
+        amount_money = Money(commodity_data.get('amount'), convert_to_pence=False)
+        amount_raised_money = Money(commodity_data.get('amount_raised'), convert_to_pence=False)
+        amount_left = amount_money.value - amount_raised_money.value
+        commodity_data['amount_left'] = Money.extract_leading_pence(amount_left)
+        commodity_data['amount'] = Money.extract_leading_pence(amount_money.value)
+        commodity_data['amount_raised'] = Money.extract_leading_pence(amount_raised_money.value)
+
+        commodity_data['amount_left_trailing_pence'] = Money.extract_trailing_pence(amount_left)
+        commodity_data['amount_trailing_pence'] = Money.extract_trailing_pence(amount_money.value)
+        commodity_data['amount_raised_trailing_pence'] = Money.extract_trailing_pence(amount_raised_money.value)
+
+        commodity_data['percentage_funded'] = calculate_percentage_raised(amount_money, amount_raised_money)
+
+    return render_template('commodity/commodity_index.html', commodities=commodities, title="Commodity")

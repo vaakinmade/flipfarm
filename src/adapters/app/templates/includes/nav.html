@@ -31,8 +31,8 @@
 							<li>
 								<a href="#">About</a>
 							</li>
-							<li>
-								<a href="#">Commodities</a>
+							<li class="{% if title == 'Commodity' %} current {% endif %}">
+								<a href="{{url_for('commodity.index')}}">Commodities</a>
 							</li>
 							<li class="{% if title == 'Investment' %} current {% endif %}">
 								<a href="{{url_for('investment.user_investments')}}">Investment</a>
