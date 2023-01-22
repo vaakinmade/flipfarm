@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Optional, Any
+from datetime import datetime, timedelta
 
 from . import CreateInvestmentInputDto, UpdateInvestmentInputDto
 from src.domain.ports.repository import RepositoryInterface
@@ -57,9 +58,9 @@ class InvestmentService:
 
     def get_investments_by_investor_id(self, investor_id: int) -> dict[Any, Any]:
         data = (investor_id,)
-        query = "SELECT i.id, i.id_, i.amount, status, maturity_date, c.id as c_id, c.id_ as c_id_," \
+        query = "SELECT i.id, i.id_, i.amount, i.created_at, status, maturity_date, c.id as c_id, c.id_ as c_id_," \
                 "name, interest_yield, c.amount as c_amount, c.amount_raised, location, location_thumbnail, " \
-                "category, duration, fund_status "\
+                "category, duration, fund_status " \
                 "FROM investment i LEFT JOIN commodity c ON i.commodity_id = c.id WHERE i.investor_id = %s"
         try:
             cursor = self.investment_repo.execute(query, data, commit=True)
@@ -69,7 +70,12 @@ class InvestmentService:
 
 
 def calculate_percentage(amount: Money, percent: float) -> float:
-    return (percent/100) * float(amount.value)
+    return (percent / 100) * float(amount.value)
+
+
+def get_investment_due_date(start_date: datetime, duration: int) -> datetime:
+    duration = timedelta(weeks=duration) + start_date
+    return duration
 
 
 class Status(Enum):

@@ -41,7 +41,7 @@
 
 
 	{% for commodity_data in commodities %}
-		<section class="event-area section-gap-botto mb-30">
+		<section class="event-area section-gap-botto mt-50">
 		<div class="container mt-30">
 			<div class="row align-items-center justify-content-center commodity-items wow fadeInUp" data-wow-delay="0.2s">
 					<div class="col-lg-5">
@@ -58,8 +58,8 @@
 							<div class="col-md-3">
 								<a class="category">
 									{% if commodity_data.get('category') == 'exclusive' %}
-									<span style="color:#FFD700;">
-										<i class="far fa-star-half-alt"></i>
+									<span style="color:#ffb400;">
+										<i class="fas fa-star"></i>
 										{{ commodity_data.get('category')}}
 									</span>
 									{% else %}
@@ -75,6 +75,7 @@
 								<a href="#">{{ commodity_data.get('location') }} </a>
 							</div>
 							<a href="#" class="date"><i class="far fa-calendar-alt"></i>{{ commodity_data.get('duration') }} weeks</a>
+							<a href="#" class="date">Batch: #{{commodity_data.get('name')[0]}}000{{ commodity_data.get('id') }}</a>
 						</div>
 						<div class="project-funding-info">
 							<div class="info-box">

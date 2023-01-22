@@ -37,73 +37,92 @@
 	<!--====== Header End ======-->
 
 	<!--====== Project Details Area Start ======-->
-	{% for investment_data in investments_data %}
-		<section class="project-details-area section-gap-extra-bottom mt-40 mb-60">
-		<div class="container">
-			<div class="row no-gutters align-items-center justify-content-center investment-item-border pl-20 pb-20 pt-20">
-				<div class="col-lg-5 col-md-10">
-					<div class="project-thumb mb-md-50">
-						<img src="../../static/img/ChickenDetail.jpg" alt="Image">
+	<div class="section-gap-bottom"></div>
+
+	<!--====== Project Details Area Start ======-->
+	{% if investments_data %}
+		{% for investment_data in investments_data %}
+			<section class="project-details-area mb-50">
+			<div class="container mt-30">
+				<div class="row align-items-center justify-content-center investment-item-borde
+				 commodity-items wow fadeInUp" data-wow-delay="0.2s">
+					<div class="col-lg-5 col-md-10">
+						<div class="project-thumb mb-md-50">
+							<img src="../../static/img/ChickenDetail.jpg" alt="Image">
+						</div>
 					</div>
-				</div>
-				<div class="col-lg-7">
-					<div class="project-summery mt-35">
-						<div class="row">
-							<div class="col-md-9">
-								<h3 class="project-title">Investment - {{ investment_data.get('name').lower() }}</h3>
-							</div>
-							<div class="col-md-3">
-								<a class="category"><i class="far fa-users"></i> {{ investment_data.get('category')}}</a>
-							</div>
-						</div>
-
-						<div class="meta">
-							<div class="author">
-								<img alt="Zimbabwe" src="{{ investment_data.get('location_thumbnail') }}">
-								<a href="#">{{ investment_data.get('location') }}</a>
-							</div>
-							<a href="#" class="date">
-								<i class="far fa-calendar-alt"></i>{{ investment_data.get('duration') }} weeks from when this investment goes live.
-							</a>
-						</div>
-						<div class="project-funding-info">
-							<div class="info-box">
-								<span>
-									£{{ investment_data.get('amount') }}<spa class="pence-text">.{{investment_data.get('amount_trailing_pence')}}</spa>
-								</span>
-								<br/>
-								<span class="info-title">Invested</span>
-							</div>
-							<div class="info-box">
-								<span>{{ investment_data.get('interest_yield') }}<spa class="pence-text">%</spa></span>
-								<br/>
-								<span class="info-title">Interest</span>
-							</div>
-							<div class="info-box">
-								<span>£{{ investment_data.get('return') }}</span><spa class="pence-text">.{{investment_data.get('return_trailing_pence')}}</spa>
-								<br/>
-								<span class="info-title">Return</span>
-							</div>
-						</div>
-						<div class="project-form">
-							<form action="{{url_for('commodity.view_detail', id_=investment_data.get('c_id_'))}}" method="get">
-
-								<div class="row no-gutters">
-									<div class="col-md-9"></div>
-									<div class="col-md-3">
-										<button type="submit" class="main-btn">
-											<a></a>Top-up <i class="far fa-arrow-right"></i>
-										</button>
-									</div>
+					<div class="col-lg-7">
+						<div class="project-summery mt-35">
+							<div class="row">
+								<div class="col-md-9">
+									<h3 class="project-title">Investment - {{ investment_data.get('name').lower() }}</h3>
 								</div>
-							</form>
+								<div class="col-md-3">
+									<a class="category"><i class="far fa-check-circle"></i> {{ investment_data.get('status')}}</a>
+								</div>
+							</div>
+
+							<div class="meta">
+								<div class="author">
+									<img alt="Zimbabwe" src="{{ investment_data.get('location_thumbnail') }}">
+									<a href="#">{{ investment_data.get('location') }}</a>
+								</div>
+								<a href="#" class="date">
+									<i class="far fa-calendar-alt"></i>{{ investment_data.get('duration') }} weeks
+								</a>
+								<a href="#" class="date"><i class="far fa-barcode"></i>
+									Batch: #{{investment_data.get('name')[0]}}000{{ investment_data.get('c_id') }}
+								</a>
+							</div>
+							<div class="project-funding-info">
+								<div class="info-box">
+									<span>
+										£{{ investment_data.get('amount') }}<spa class="pence-text">.{{investment_data.get('amount_trailing_pence')}}</spa>
+									</span>
+									<br/>
+									<span class="info-title"><small>Invested</small></span>
+								</div>
+								<div class="info-box">
+									<span>{{ investment_data.get('interest_yield') }}<spa class="pence-text">%</spa></span>
+									<br/>
+									<span class="info-title"><small>Interest</small></span>
+								</div>
+								<div class="info-box">
+									<span>£{{ investment_data.get('capital_gain_pence') }}<spa class="pence-text">.{{investment_data.get('capital_gain_trailing_pence')}}</spa>
+									</span>
+									<br/>
+									<span class="info-title"><small>on {{ investment_data.get('due_date') }}</small></span>
+								</div>
+							</div>
+							<div class="project-form">
+								<form action="{{url_for('commodity.view_detail', id_=investment_data.get('c_id_'))}}" method="get">
+
+									<div class="row no-gutters">
+										<div class="col-md-9"></div>
+										<div class="col-md-3">
+											<button type="submit" class="main-btn">
+												<a></a>Top-up <i class="far fa-arrow-right"></i>
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+			</section>
+		{% endfor %}
+	{% else %}
+		<section class="project-details-area mb-650">
+			<div class="container mt-30">
+				<p class="no-data-text">
+					You have no investments. Check out our commodities on offer
+					<a href="{{url_for('commodity.index')}}">here</a>.
+				</p>
+			</div>
 		</section>
-	{% endfor %}
+	{% endif %}
 	<!--====== Project Details Area End ======-->
 
 {% endblock %}

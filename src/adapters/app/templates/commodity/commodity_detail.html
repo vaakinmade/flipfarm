@@ -54,7 +54,7 @@
 							<div class="col-md-3">
 								<a class="category">
 									{% if commodity_data.get('category') == 'exclusive' %}
-										<i class="far fa-star-christmas"></i>
+										<i class="fas fa-star"></i>
 									{% else %}
 										<i class="far fa-users"></i>
 									{% endif %}
@@ -69,6 +69,9 @@
 								<a href="#">{{ commodity_data.get('location') }}</a>
 							</div>
 							<a href="#" class="date"><i class="far fa-calendar-alt"></i>{{ commodity_data.get('duration') }} weeks</a>
+							<a href="#" class="date"><i class="far fa-barcode"></i>
+								Batch: #{{commodity_data.get('name')[0]}}000{{ commodity_data.get('id') }}
+							</a>
 						</div>
 						<div class="project-funding-info">
 							<div class="info-box">

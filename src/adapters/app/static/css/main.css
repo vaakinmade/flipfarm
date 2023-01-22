@@ -464,6 +464,26 @@ a:hover {
 	margin-bottom: 110px;
 }
 
+.mb-200 {
+	margin-bottom: 200px;
+}
+
+.mb-500 {
+	margin-bottom: 500px;
+}
+
+.mb-650 {
+	margin-bottom: 650px;
+}
+
+.mb-700 {
+	margin-bottom: 700px;
+}
+
+.mb-750 {
+	margin-bottom: 750px;
+}
+
 /*======= Keyframes =======*/
 @-webkit-keyframes headerSlideDown {
 	0% {
@@ -1215,6 +1235,7 @@ a:hover {
 /*======= Footer =======*/
 .site-footer {
 	position: relative;
+	margin-top: 275px;
 }
 
 .site-footer .footer-content-area {
@@ -2402,6 +2423,11 @@ a:hover {
 	margin-bottom: -230px;
 	position: relative;
 	z-index: 2;
+}
+
+.no-data-text {
+    text-align: center;
+    font-weight: 700;
 }
 
 /*======= Project Slider Arrow =======*/
@@ -3898,7 +3924,7 @@ a:hover {
 	background-color: var(--white);
 	-webkit-box-shadow: 0px 30px 60px 0px rgba(0, 29, 35, 0.07);
 	box-shadow: 0px 30px 60px 0px rgba(0, 29, 35, 0.07);
-	padding: 40px 20px;
+	padding: 20px 0px 20px 10px;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;

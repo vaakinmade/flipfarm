@@ -3,9 +3,9 @@ from dependency_injector.wiring import inject, Provide
 
 from src.adapters.app.blueprints.auth import login_required
 from src.domain.ports import create_investment_factory, update_investment_factory
-from src.domain.ports.investment_service import InvestmentService, calculate_percentage, Status
+from src.domain.ports.investment_service import InvestmentService, calculate_percentage, Status, get_investment_due_date
 from src.main.containers import Container
-from src.domain.utils import Money, validate_amount
+from src.domain.utils import Money
 
 blueprint = Blueprint('investment', __name__, url_prefix='/investment')
 
@@ -51,13 +51,17 @@ def user_investments(investment_service: InvestmentService = Provide[Container.i
     investments_data = investment_service.get_investments_by_investor_id(user_id)
 
     for data in investments_data:
-        return_amount = int(data['amount']) + calculate_percentage(Money(data['amount'], convert_to_pence=False),
-                                                                   data['interest_yield'])
-        data['return'] = Money.extract_leading_pence(return_amount)
-        data['return_trailing_pence'] = Money.extract_trailing_pence(return_amount)
-
         amount = data['amount']
+        data['capital_gain'] = calculate_percentage(Money(data['amount'], convert_to_pence=False),
+                                                    data['interest_yield'])
+
         data['amount'] = Money.extract_leading_pence(amount)
         data['amount_trailing_pence'] = Money.extract_trailing_pence(amount)
+
+        data['capital_gain_pence'] = Money.extract_leading_pence(data['capital_gain'])
+        data['capital_gain_trailing_pence'] = Money.extract_trailing_pence(data['capital_gain'])
+
+        due_date = get_investment_due_date(data['created_at'], data['duration'])
+        data['due_date'] = due_date.strftime("%d %b, %Y")
 
     return render_template('investment/investment_detail.html', investments_data=investments_data, title="Investment")

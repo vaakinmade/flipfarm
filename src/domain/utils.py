@@ -30,10 +30,10 @@ class Money(object):
         self.value = self.value + num.value
         return self
 
-    # def multiplied_by(self, multiplier):
-    #     Money.validate_type(multiplier)
-    #     self.value = self.value * multiplier.value
-    #     return self
+    def multiplied_by(self, multiplier):
+        # Money.validate_type(multiplier)
+        self.value = self.value * multiplier.value
+        return self
     #
     # def divided_by(self, divisor):
     #     Money.validate_type(divisor)
@@ -52,6 +52,7 @@ class Money(object):
 
     @staticmethod
     def extract_trailing_pence(amount: Union[int, float]):
+        print("amt", amount)
         pence = Money.convert_from_pence(amount)
         trailing_pence = pence.split(".")[1]
         return trailing_pence

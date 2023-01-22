@@ -51,7 +51,7 @@ class CommodityService:
         query = "SELECT * FROM commodity WHERE id_ = %s;"
         try:
             cursor = self.commodity_repo.execute(query, data, commit=True)
-            return cursor.fetchall()
+            return cursor.fetchone()
         except Exception as err:
             raise CommodityDBOperationError() from err
 
